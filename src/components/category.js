@@ -1,12 +1,9 @@
 import React from "react";
-
 const Category = () => {
   return (
-    <div>
-      <div>
-        <img />
-        <h3></h3>
-      </div>
+    <div className="icon">
+      <i class="bi bi-speedometer"></i>
+      {/* <h3>{categoryName}</h3> */}
     </div>
   );
 };

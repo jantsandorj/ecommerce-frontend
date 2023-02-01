@@ -1,0 +1,12 @@
+.bi {
+  width: 15px;
+  height: 15px;
+  display: block;
+}
+.d-flex {
+  width: 100vw;
+  height: 100vh;
+}
+.icon {
+  height: 200px;
+}

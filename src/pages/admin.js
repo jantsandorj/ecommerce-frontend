@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Category from "../components/category";
 import { Outlet } from "react-router-dom";
+import "../style/admin.css";
 
 const Admin = () => {
+  // useEffect(() => {
+  //   fetch("http://localhost:9000/api/category")
+  //     .then((res) => res.json())
+  //     .then((data) => console.log(data));
+  // }, []);
   return (
     <div className="container">
       <div className="d-flex">
         <div className="d-flex">
           <div className="d-flex flex-column">
-            <img />
+            {/* <img /> */}
             <Category />
           </div>
           <button type="">Log Out</button>
