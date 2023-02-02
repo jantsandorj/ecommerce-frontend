@@ -1,11 +1,14 @@
 import React from "react";
-const Category = () => {
+import "bootstrap/dist/css/bootstrap.min.css";
+
+const Category = ({ categoryName, link, iconName }) => {
   return (
-    <div className="icon">
-      <i class="bi bi-speedometer"></i>
-      {/* <h3>{categoryName}</h3> */}
+    <div>
+      <i className={`mx-2 bi bi-${iconName ? iconName : "list"}`}></i>
+      <a href={link} className="text-light text-decoration-none">
+        {categoryName}
+      </a>
     </div>
   );
 };
-
 export default Category;
