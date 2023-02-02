@@ -15,36 +15,45 @@ const Admin = () => {
   }, []);
   console.log(data);
   return (
-    <div className="con">
-      <div className="d-flex outer">
-        <div className="d-flex flex-column left">
-          <img src={Logo} className="logo" />
-          <div className="d-flex flex-column">
-            {data.map((e) => {
-              return (
-                <Category
-                  categoryName={e.categoryName}
-                  link={e.link}
-                  iconName={e.iconName}
-                />
-              );
-            })}
-            <button className="btn btn-light w-25">Log Out</button>
+    <div className="con row">
+      <div className="d-flex flex-column left col-2">
+        <img src={Logo} className="logo" />
+        <div className="d-flex flex-column gap-3">
+          {data.map((e) => {
+            return (
+              <Category
+                categoryName={e.categoryName}
+                link={e.link}
+                iconName={e.iconName}
+              />
+            );
+          })}
+          <div>
+            <i className="bi bi-box-arrow-right text-secondary"></i>
+            <button className="btn logout">Log Out</button>
           </div>
         </div>
-        <div className="right">
-          <div className="d-flex justify-content-evenly top">
-            <input placeholder="Search product" />
-            <div className="d-flex gap-3">
-              <span>
-                <MdNotifications />
-              </span>
-              <DropdownButton />
-            </div>
+      </div>
+      <div className="right col-10">
+        <div className="row top">
+          <div className="d-flex searchDiv col-9">
+            <input placeholder="Search product" className="srchInput" />
+            <i className="bi bi-search"></i>
           </div>
-          <div className="outlet">
-            <Outlet />
+          <div className="d-flex gap-4 col-3 align-items-center">
+            <span>
+              <MdNotifications color="gray" />
+            </span>
+            <DropdownButton
+              username={"Jack"}
+              userImg={
+                "https://wallpapers.com/images/hd/cool-neon-blue-profile-picture-u9y9ydo971k9mdcf.jpg"
+              }
+            />
           </div>
+        </div>
+        <div className="outlet">
+          <Outlet />
         </div>
       </div>
     </div>
