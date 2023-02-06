@@ -2,16 +2,21 @@ import React from "react";
 import "../style/productModal.css";
 import { useState, useEffect } from "react";
 
-const ProductModal = () => {
+const ProductModal = (data) => {
   const [category, setCategory] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:9000/api/category")
+    fetch("http://localhost:9000/api/productCat")
       .then((res) => res.json())
-      .then((dt) => setCategory(dt.message));
+      .then((dt) => {
+        console.log(dt);
+        setCategory(dt.message);
+        console.log(category);
+      });
   }, []);
+
   return (
     <div className="d-flex row text-secondary">
-      <div className="row col-6">
+      <div className="row col-6 gap-3">
         <div className="d-flex flex-column">
           <label>Product Name</label>
           <input className="" />
@@ -21,11 +26,9 @@ const ProductModal = () => {
             <label>Category</label>
             <select>
               <option>Category</option>
-
-              <option></option>
-              <option>Male</option>
-              <option>Male</option>
-              <option>Male</option>
+              {category.map((e) => {
+                return <option>{e.category}</option>;
+              })}
             </select>
           </div>
           <div className="d-flex flex-column col-4">
@@ -39,17 +42,17 @@ const ProductModal = () => {
         </div>
         <div className="d-flex flex-column">
           <label>Brand</label>
-          <input />
+          <input type="text" />
         </div>
         <div className="d-flex flex-column">
           <label>Description</label>
-          <input type="textarea" />
+          <textarea cols="4" rows="5"></textarea>
         </div>
       </div>
       <div className="row col-6">
         <div className="d-flex flex-column">
           <label>Product Images</label>
-          <input />
+          <input type="file" />
         </div>
         <div className="d-flex flex-column">
           <label>Add size /sm/</label>

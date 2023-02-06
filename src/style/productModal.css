@@ -1,5 +1,6 @@
 input,
-select {
+select,
+textarea {
   background-color: #2a2d3e;
   outline: none;
   border: none;
