@@ -1,0 +1,9 @@
+input,
+select {
+  background-color: #2a2d3e;
+  outline: none;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 15px 15px;
+}

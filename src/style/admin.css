@@ -28,9 +28,12 @@
 }
 .outlet {
   background-color: #202332;
+  color: white;
   border-radius: 10px;
   display: flex;
   flex: 1;
+  height: 100vh;
+  width: 100%;
 }
 
 /* Right side style  */
@@ -55,6 +58,7 @@
 }
 .right {
   background-color: #2a2d3e;
+  padding: 0;
 }
 .top {
   background-color: #2a2d3e;

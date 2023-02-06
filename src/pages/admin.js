@@ -18,7 +18,7 @@ const Admin = () => {
     <div className="con row">
       <div className="d-flex flex-column left col-2">
         <img src={Logo} className="logo" />
-        <div className="d-flex flex-column gap-3">
+        <div className="d-flex flex-column px-3 gap-3">
           {data.map((e) => {
             return (
               <Category
