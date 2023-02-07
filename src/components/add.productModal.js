@@ -3,41 +3,76 @@ import "../style/productModal.css";
 import { useState, useEffect } from "react";
 
 const ProductModal = (data) => {
+  const init = {
+    productName: "",
+    categoryID: "",
+    price: "",
+    thumbImg: "",
+    images: [],
+    discountPercent: "",
+    quantity: "",
+    desc: "",
+    createDate: Date.now(),
+    createUser: "",
+  };
+
   const [category, setCategory] = useState([]);
+  const [product, setProduct] = useState(init);
   useEffect(() => {
     fetch("http://localhost:9000/api/productCat")
       .then((res) => res.json())
       .then((dt) => {
-        console.log(dt);
         setCategory(dt.message);
-        console.log(category);
       });
   }, []);
+  function onSave(product) {
+    fetch("http://localhost:9000/api/products", {
+      method: "POST",
+      body: JSON.stringify(product),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+  }
 
   return (
     <div className="d-flex row text-secondary">
       <div className="row col-6 gap-3">
         <div className="d-flex flex-column">
           <label>Product Name</label>
-          <input className="" />
+          <input
+            type={"text"}
+            placeholder="Enter product name !!!"
+            value={product.productName}
+            onChange={(e) => {
+              setProduct({ ...product, productName: e.target.value });
+            }}
+          />
         </div>
         <div className="row">
           <div className="d-flex flex-column col-8">
             <label>Category</label>
-            <select>
+            <select
+              value={product.categoryID}
+              onChange={(e) => {
+                setProduct({ ...product, categoryID: e.target.value });
+              }}
+            >
               <option>Category</option>
               {category.map((e) => {
-                return <option>{e.category}</option>;
+                return <option value={e.category}>{e.category}</option>;
               })}
             </select>
           </div>
           <div className="d-flex flex-column col-4">
-            <label>Gender</label>
-            <select>
-              <option>Gender</option>
-              <option>Male</option>
-              <option>Female</option>
-            </select>
+            <label>Price</label>
+            <input
+              type={"number"}
+              value={product.price}
+              onChange={(e) => {
+                setProduct({ ...product, price: e.target.value });
+              }}
+            />
           </div>
         </div>
         <div className="d-flex flex-column">
@@ -46,53 +81,54 @@ const ProductModal = (data) => {
         </div>
         <div className="d-flex flex-column">
           <label>Description</label>
-          <textarea cols="4" rows="5"></textarea>
+          <textarea
+            value={product.desc}
+            onChange={(e) => {
+              setProduct({ ...product, desc: e.target.value });
+            }}
+            cols="4"
+            rows="5"
+          ></textarea>
         </div>
       </div>
       <div className="row col-6 modalRight">
         <div className="d-flex flex-column gap-3">
           <div className="d-flex flex-column">
-            <label>Product Images</label>
-            <input type="file" className="fileInput" />
+            <label>Thumb image</label>
+            <input
+              type="file"
+              className="fileInput"
+              value={product.thumbImg}
+              onChange={(e) => {
+                setProduct({ ...product, thumbImg: e.target.value });
+              }}
+            />
           </div>
           <div className="d-flex flex-column">
-            <label>Add size</label>
-            <div className="d-flex gap-3">
-              <div className="d-flex align-items-center gap-2">
-                <input type="checkbox" id="XXS" />
-                <label for="XXS">XXS</label>
-              </div>
-              <div className="d-flex align-items-center gap-2">
-                <input type="checkbox" id="XS" />
-                <label for="XS">XS</label>
-              </div>
-              <div className="d-flex align-items-center gap-2">
-                <input type="checkbox" id="S" />
-                <label for="S">S</label>
-              </div>
-              <div className="d-flex align-items-center gap-2">
-                <input type="checkbox" id="M" />
-                <label for="M">M</label>
-              </div>
-              <div className="d-flex align-items-center gap-2">
-                <input type="checkbox" id="L" />
-                <label for="L">L</label>
-              </div>
-              <div className="d-flex align-items-center gap-2">
-                <input type="checkbox" id="XL" />
-                <label for="XL">XL</label>
-              </div>
-              <div className="d-flex align-items-center gap-2">
-                <input type="checkbox" id="XXL" />
-                <label for="XXL">XXL</label>
-              </div>
-            </div>
+            <label>Slide Images</label>
+            <input
+              multiple
+              type="file"
+              className="fileInput"
+              value={product.images}
+              onChange={(e) => {
+                setProduct({ ...product, images: e.target.value });
+              }}
+            />
           </div>
           <div className="d-flex flex-column">
-            <label>Product Date</label>
-            <input type="date" />
+            <label>Created User</label>
+            <input type="text" />
           </div>
-          <button className="btn btn-primary">Add product</button>
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              // onClose();
+              onSave(product);
+            }}
+          >
+            Add product
+          </button>
         </div>
       </div>
     </div>
