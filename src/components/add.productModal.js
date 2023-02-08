@@ -1,6 +1,10 @@
 import React from "react";
 import "../style/productModal.css";
 import { useState, useEffect } from "react";
+import { fill } from "@cloudinary/url-gen/actions/resize";
+import { CloudinaryImage } from "@cloudinary/url-gen";
+import { AdvancedImage } from "@cloudinary/react";
+import axios, { Axios } from "axios";
 
 const ProductModal = (data) => {
   const init = {
@@ -18,6 +22,7 @@ const ProductModal = (data) => {
 
   const [category, setCategory] = useState([]);
   const [product, setProduct] = useState(init);
+  const [image, setImage] = useState("");
   useEffect(() => {
     fetch("http://localhost:9000/api/productCat")
       .then((res) => res.json())
@@ -33,7 +38,43 @@ const ProductModal = (data) => {
         "Content-type": "application/json",
       },
     });
+    setProduct(init);
   }
+  async function uploadImage(files) {
+    console.log(files);
+    if (files.length == 1) {
+      const formData = new FormData();
+      formData.append("file", files[0]);
+      formData.append("upload_preset", "zjiweql4");
+      axios
+        .post("https://api.cloudinary.com/v1_1/duo1znrio/upload", formData)
+        .then((res) => {
+          console.log(res.data.secure_url);
+          setProduct({ ...product, thumbImg: res.data.secure_url });
+        });
+    } else {
+      const slideImages = [];
+      // const slideImg = [];
+      for (let i = 0; i < files.length; i++) {
+        slideImages.push(files[i]);
+      }
+      const promose = await Promise.all(
+        slideImages.map((file) => {
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("upload_preset", "zjiweql4");
+          return axios.post(
+            "https://api.cloudinary.com/v1_1/duo1znrio/upload",
+            formData
+          );
+        })
+      );
+      // setProduct({ ...product, images: slideImg });
+    }
+  }
+  const myImage = new CloudinaryImage("sample", {
+    cloudName: "duo1znrio",
+  }).resize(fill().width(10).height(10));
 
   return (
     <div className="d-flex row text-secondary">
@@ -98,9 +139,8 @@ const ProductModal = (data) => {
             <input
               type="file"
               className="fileInput"
-              value={product.thumbImg}
               onChange={(e) => {
-                setProduct({ ...product, thumbImg: e.target.value });
+                uploadImage(e.target.files);
               }}
             />
           </div>
@@ -110,9 +150,8 @@ const ProductModal = (data) => {
               multiple
               type="file"
               className="fileInput"
-              value={product.images}
               onChange={(e) => {
-                setProduct({ ...product, images: e.target.value });
+                uploadImage(e.target.files);
               }}
             />
           </div>

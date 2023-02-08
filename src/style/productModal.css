@@ -22,10 +22,4 @@ input::file-selector-button {
   border: none;
   cursor: pointer;
   color: gray;
-  display: block;
-}
-input::before {
-  content: " ";
-}
-input[type="file"]:placeholder-shown {
 }
