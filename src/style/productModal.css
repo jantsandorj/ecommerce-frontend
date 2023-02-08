@@ -16,10 +16,33 @@ textarea {
 input::file-selector-button {
   padding: 0;
   margin: 0;
-  display: block;
+  display: none;
   background: transparent;
   outline: none;
   border: none;
   cursor: pointer;
   color: gray;
+
+}
+
+.modal{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute!important;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  height: 100vh!important;
+  width: 100%;
+  background-color: #22284993
+}
+.modal-content{
+  background-color: #202332;
+  padding: 3rem;
+  width: 100%;
+}
+.modal-dialog{
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
