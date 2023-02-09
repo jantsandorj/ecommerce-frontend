@@ -54,7 +54,7 @@ const ProductModal = (data) => {
         });
     } else {
       const slideImages = [];
-      // const slideImg = [];
+      const slideImg = [];
       for (let i = 0; i < files.length; i++) {
         slideImages.push(files[i]);
       }
@@ -69,7 +69,7 @@ const ProductModal = (data) => {
           );
         })
       );
-      // setProduct({ ...product, images: slideImg });
+      setProduct({ ...product, images: slideImg });
     }
   }
   const myImage = new CloudinaryImage("sample", {
