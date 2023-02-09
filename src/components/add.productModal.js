@@ -100,7 +100,7 @@ const ProductModal = ({ show, setShow }) => {
         }}
       >
         <div class="modal-content">
-          <div class="d-flex justify-content-around">
+          <div class="d-flex justify-content-around w-100">
             <h3 className="text-secondary">Add product</h3>
             <button
               className="close border-0 bg-none"
@@ -109,8 +109,8 @@ const ProductModal = ({ show, setShow }) => {
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div className=" row text-secondary">
-            <div className="row col-6 gap-3">
+          <div className=" row text-secondary w-100">
+            <div className="row col-6 gap-3 w-100">
               <div className="d-flex flex-column">
                 <label>Product Name</label>
                 <input
@@ -123,7 +123,7 @@ const ProductModal = ({ show, setShow }) => {
                 />
               </div>
               <div className="row">
-                <div className="d-flex flex-column col-8">
+                <div className="d-flex flex-column col-6">
                   <label>Category</label>
                   <select
                     value={product.categoryID}
@@ -137,7 +137,7 @@ const ProductModal = ({ show, setShow }) => {
                     })}
                   </select>
                 </div>
-                <div className="d-flex flex-column col-4">
+                <div className="d-flex flex-column col-3">
                   <label>Price</label>
                   <input
                     type={"number"}
@@ -147,10 +147,29 @@ const ProductModal = ({ show, setShow }) => {
                     }}
                   />
                 </div>
+                <div className="d-flex flex-column col-3">
+                  <label>Discount</label>
+                  <input
+                    type={"number"}
+                    value={product.discountPercent}
+                    onChange={(e) => {
+                      setProduct({
+                        ...product,
+                        discountPercent: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
               </div>
               <div className="d-flex flex-column">
-                <label>Brand</label>
-                <input type="text" />
+                <label>Quantity</label>
+                <input
+                  type="number"
+                  value={product.quantity}
+                  onChange={(e) => {
+                    setProduct({ ...product, quantity: e.target.value });
+                  }}
+                />
               </div>
               <div className="d-flex flex-column">
                 <label>Description</label>
@@ -164,9 +183,9 @@ const ProductModal = ({ show, setShow }) => {
                 ></textarea>
               </div>
             </div>
-            <div className="row col-6 modalRight">
+            <div className="row col-6 modalRight w-100">
               <div className="d-flex flex-column gap-3">
-                <div className="d-flex flex-column">
+                <div className="d-flex flex-column w-100">
                   <label>Thumb image</label>
                   <input
                     type="file"
@@ -176,7 +195,7 @@ const ProductModal = ({ show, setShow }) => {
                     }}
                   />
                 </div>
-                <div className="d-flex flex-column">
+                <div className="d-flex flex-column w-100">
                   <label>Slide Images</label>
                   <input
                     multiple
@@ -189,7 +208,13 @@ const ProductModal = ({ show, setShow }) => {
                 </div>
                 <div className="d-flex flex-column">
                   <label>Created User</label>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    value={product.createUser}
+                    onChange={(e) => {
+                      setProduct({ ...product, createUser: e.target.value });
+                    }}
+                  />
                 </div>
                 <button
                   className="btn btn-primary"
