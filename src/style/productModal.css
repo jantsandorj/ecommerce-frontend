@@ -35,4 +35,6 @@ input::file-selector-button {
 }
 .close {
   background: transparent;
+  color: white;
+  text-align: end;
 }

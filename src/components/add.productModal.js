@@ -6,7 +6,7 @@ import { CloudinaryImage } from "@cloudinary/url-gen";
 import { AdvancedImage } from "@cloudinary/react";
 import axios, { Axios } from "axios";
 
-const ProductModal = ({ show, setShow }) => {
+const ProductModal = ({ show, setShow, addEdit, editid, Getdata }) => {
   const init = {
     productName: "",
     categoryID: "",
@@ -21,10 +21,24 @@ const ProductModal = ({ show, setShow }) => {
   };
   const onClose = () => {
     setShow(false);
+    setProduct(init);
   };
 
   const [category, setCategory] = useState([]);
   const [product, setProduct] = useState(init);
+
+  useEffect(() => {
+    fetch("http://localhost:9000/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        data.result.map((e) => {
+          if (e.id == editid) {
+            console.log(e);
+            setProduct(e);
+          }
+        });
+      });
+  }, [show]);
 
   useEffect(() => {
     fetch("http://localhost:9000/api/productCat")
@@ -34,17 +48,31 @@ const ProductModal = ({ show, setShow }) => {
       });
   }, []);
   function onSave(product) {
-    fetch("http://localhost:9000/api/products", {
-      method: "POST",
-      body: JSON.stringify(product),
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
-    setProduct(init);
+    if (!editid) {
+      fetch("http://localhost:9000/api/products", {
+        method: "POST",
+        body: JSON.stringify(product),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }).then((data) => {
+        setProduct(init);
+        Getdata();
+      });
+    } else {
+      fetch(`http://localhost:9000/api/products/${editid}`, {
+        method: "PUT",
+        body: JSON.stringify(product),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }).then(() => {
+        Getdata();
+        setProduct(init);
+      });
+    }
   }
   const uploadImage = async (files) => {
-    console.log(files);
     if (files.length == 1) {
       const formData = new FormData();
       formData.append("file", files[0]);
@@ -52,7 +80,6 @@ const ProductModal = ({ show, setShow }) => {
       axios
         .post("https://api.cloudinary.com/v1_1/duo1znrio/upload", formData)
         .then((res) => {
-          console.log(res.data.secure_url);
           setProduct({ ...product, thumbImg: res.data.secure_url });
         });
     } else {
@@ -60,7 +87,7 @@ const ProductModal = ({ show, setShow }) => {
       for (let i = 0; i < files.length; i++) {
         slideImages.push(files[i]);
       }
-      console.log(slideImages);
+
       const promose = await Promise.all(
         slideImages.map((file) => {
           const formData = new FormData();
@@ -74,17 +101,13 @@ const ProductModal = ({ show, setShow }) => {
       ).then((res) => {
         const slideImg = [];
         res.map((img) => {
-          console.log(img);
           slideImg.push(img.data.secure_url);
         });
-        console.log(slideImg);
+
         setProduct({ ...product, images: slideImg });
       });
     }
   };
-  const myImage = new CloudinaryImage("sample", {
-    cloudName: "duo1znrio",
-  }).resize(fill().width(10).height(10));
 
   return (
     <div
@@ -100,16 +123,18 @@ const ProductModal = ({ show, setShow }) => {
         }}
       >
         <div class="modal-content">
-          <div class="d-flex justify-content-around w-100">
-            <h3 className="text-secondary">Add product</h3>
+          <div class="d-flex justify-content-end">
+            <h3 className="text-secondary w-75">
+              {addEdit ? "Edit" : "Add"} product
+            </h3>
             <button
               className="close border-0 bg-none"
-              onClick={() => setShow(false)}
+              onClick={() => onClose()}
             >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div className=" row text-secondary w-100">
+          <div className=" row text-secondary w-100 m-0 p-0">
             <div className="row col-6 gap-3 w-100">
               <div className="d-flex flex-column">
                 <label>Product Name</label>
@@ -217,13 +242,13 @@ const ProductModal = ({ show, setShow }) => {
                   />
                 </div>
                 <button
-                  className="btn btn-primary"
+                  className={addEdit ? "btn btn-warning" : "btn btn-primary"}
                   onClick={() => {
                     onClose();
                     onSave(product);
                   }}
                 >
-                  Add product
+                  <span>{addEdit ? "Edit" : "Add"}</span> product
                 </button>
               </div>
             </div>
